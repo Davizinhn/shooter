@@ -1,4 +1,3 @@
-# Example file showing a basic pygame "game loop"
 import pygame
 import random
 from playsound import playsound
@@ -12,18 +11,13 @@ telas = 'menu'
 
 pygame.mixer.music.load('assets/song.wav')
 
-# Set the volume
 pygame.mixer.music.set_volume(0.5)
 musicvolume = pygame.mixer.music.get_volume()
 
-# Play the music file in an infinite loop
 pygame.mixer.music.play(loops=-1)
 pygame.display.set_caption('Generic Space Shooter')
-# Here we load the image we want to
-# use
 Icon = pygame.image.load('assets/icon.png')
  
-# We use set_icon to set new icon
 pygame.display.set_icon(Icon)
 
 playerX = 500
@@ -65,15 +59,12 @@ class Square(pygame.sprite.Sprite):
                 self.rect.y += 4
 
 
-    # group for squares
 square_group = pygame.sprite.Group()
 
-    # game loop
 while running:
         musicvolume = pygame.mixer.music.get_volume()
         screen.fill("black")
         if telas == 'game':
-            # poll for events
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
@@ -83,7 +74,6 @@ while running:
                     else:
                         pygame.mixer.music.set_volume(0.5)
 
-            # move the player
             if playerX < 0:
                 canMoveL=False
             else:
@@ -102,7 +92,7 @@ while running:
                 playerRect.move(playerX, playerY)
             if keys[pygame.K_SPACE] and canShoot:
                 canShoot=False
-                ch = pygame.mixer.find_channel() # find open channel, returns None if all channels used
+                ch = pygame.mixer.find_channel()
                 snd = pygame.mixer.Sound('assets/laserShoot.wav')
                 snd.set_volume(0.3)
                 if (ch): ch.play(snd)
@@ -110,7 +100,6 @@ while running:
                 bullet_group.add(bullet)
                 print('espaço')
 
-            # spawn squares randomly
             if random.randint(0, 85) == 0:
                 square_x = random.randint(70, 1190)
                 square_y = -50
@@ -124,10 +113,9 @@ while running:
                     quando=0
                     canShoot=True
 
-            # check for collisions
             for square in square_group:
                 if square.rect.y > 720:
-                    ch = pygame.mixer.find_channel() # find open channel, returns None if all channels used
+                    ch = pygame.mixer.find_channel() 
                     snd = pygame.mixer.Sound('assets/hitHurt.wav')
                     snd.set_volume(0.3)
                     if (ch): ch.play(snd)
@@ -144,13 +132,12 @@ while running:
                     for bullet in bullet_group:
                         squares_hit = pygame.sprite.spritecollide(bullet, square_group, True)
                         if squares_hit:
-                            ch = pygame.mixer.find_channel() # find open channel, returns None if all channels used
+                            ch = pygame.mixer.find_channel() 
                             snd = pygame.mixer.Sound('assets/explosion.wav')
                             snd.set_volume(0.3)
                             if (ch): ch.play(snd)
                             score += 1
 
-            # update and draw everything
             playerRect.update(playerX, playerY, playerRect.width, playerRect.height)
             bullet_group.update()
             bullet_group.draw(screen)
@@ -160,9 +147,6 @@ while running:
 
             font = pygame.font.Font("assets/Pixellari.ttf", 95)
             text_surface = font.render(str(score), True, "white")
-            # Crie um objeto de superfície de texto
-
-            # Obtenha as dimensões da tela
             screen_width = 1280
             screen_height = 720
             text_width, text_height = text_surface.get_size()
@@ -176,7 +160,7 @@ while running:
                 if event.type == pygame.QUIT:
                     running = False
                 if event.type == pygame.KEYDOWN and not event.key == pygame.K_m:
-                    ch = pygame.mixer.find_channel() # find open channel, returns None if all channels used
+                    ch = pygame.mixer.find_channel()
                     snd = pygame.mixer.Sound('assets/blipSelect.wav')
                     snd.set_volume(0.45)
                     if (ch): ch.play(snd)
